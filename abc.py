@@ -62,34 +62,34 @@ if query:
     code_match = re.search(r"```(?:python)?\n(.*?)```", generated_code, re.DOTALL)
     code_to_run = code_match.group(1) if code_match else generated_code
 
-# --- Show the Generated Code ---
-st.markdown("### 🧾 Generated Python Code")
-st.code(code_to_run, language="python")
-
-    # --- Execute Code ---
-with st.spinner("🚀 Executing the code..."):
-    try:
-        local_vars = {'df': df.copy(), 'pd': pd, 'print': st.write}
-        exec(code_to_run, {'__builtins__': __builtins__, 'pd': pd}, local_vars)
-
-        # --- Display result variables ---
-        result_vars = {}
-        for var_name, var_value in local_vars.items():
-            if (var_name not in ['df', 'pd', 'print']
-                and not var_name.startswith('__')
-                and not callable(var_value)):
-                result_vars[var_name] = var_value
-
-        if result_vars:
-            st.markdown("### 📊 Result Variables:")
-            for var_name, var_value in result_vars.items():
-                st.write(f"**{var_name}:**")
-                st.write(var_value)
-
-    except Exception as e:
-        st.error("❌ Error executing generated code:")
-        st.exception(e)
-        st.markdown("### 🔧 Debug Code:")
-        st.code(code_to_run, language="python")
-    else:
-        st.info("👆 Please upload a CSV file to begin.")
+    # --- Show the Generated Code ---
+    st.markdown("### 🧾 Generated Python Code")
+    st.code(code_to_run, language="python")
+    
+        # --- Execute Code ---
+    with st.spinner("🚀 Executing the code..."):
+        try:
+            local_vars = {'df': df.copy(), 'pd': pd, 'print': st.write}
+            exec(code_to_run, {'__builtins__': __builtins__, 'pd': pd}, local_vars)
+    
+            # --- Display result variables ---
+            result_vars = {}
+            for var_name, var_value in local_vars.items():
+                if (var_name not in ['df', 'pd', 'print']
+                    and not var_name.startswith('__')
+                    and not callable(var_value)):
+                    result_vars[var_name] = var_value
+    
+            if result_vars:
+                st.markdown("### 📊 Result Variables:")
+                for var_name, var_value in result_vars.items():
+                    st.write(f"**{var_name}:**")
+                    st.write(var_value)
+    
+        except Exception as e:
+            st.error("❌ Error executing generated code:")
+            st.exception(e)
+            st.markdown("### 🔧 Debug Code:")
+            st.code(code_to_run, language="python")
+        else:
+            st.info("👆 Please upload a CSV file to begin.")
