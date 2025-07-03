@@ -2,9 +2,13 @@ import streamlit as st
 import pandas as pd
 import re
 import google.generativeai as genai
+from dotenv import load_dotenv
 
-# --- Configure Gemini ---
-genai.configure(api_key="AIzaSyD_NxiLHPuqW_Em_xZNygRg74toJ5H4_Uk")  # Replace with your Gemini API key
+import os
+
+load_dotenv()
+api_key = os.environ.get("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 csv_path = "Bulk_Order_Data_v2.csv"  # Update if needed
